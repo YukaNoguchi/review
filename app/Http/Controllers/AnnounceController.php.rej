@@ -1,0 +1,112 @@
+diff a/app/Http/Controllers/AnnounceController.php b/app/Http/Controllers/AnnounceController.php	(rejected hunks)
+@@ -1,20 +1,99 @@
+ <?php
+ 
+ namespace App\Http\Controllers;
+ 
+ use App\Announce;
++use Illuminate\Http\Request;
++use Illuminate\Support\Facades\Validator;
+ 
+ class AnnounceController extends Controller
+ {
+-  public function userIndex()
+-  {
+-    $announces = Announce::paginate(10);
+-    return view('users.announce.index', compact('announces'));
+-  }
+-
+-  public function userShow($announce)
+-  {
+-    $announce = Announce::find($announce);
+-    return view('users.announce.show', compact('announce'));
+-  }
++    public function userIndex()
++    {
++        $announces = Announce::paginate(10);
++        return view('users.announce.index', compact('announces'));
++    }
++
++    public function userShow($announce)
++    {
++        $announce = Announce::find($announce);
++        return view('users.announce.show', compact('announce'));
++    }
++
++    //【管理者】通知一覧ページ
++    public function adminIndex()
++    {
++        $announces = Announce::paginate(10);
++        return view('admins.announce.adminIndex', compact('announces'));
++    }
++
++    //【管理者】通知作成ページ
++    public function adminCreate()
++    {
++        return view('admins.announce.adminCreate');
++    }
++
++    //【管理者】通知プレビューページ
++    public function adminPreview(Request $request)
++    {
++        $validator = Validator::make($request->all(), [
++            'title' => 'required',
++            'contents' => 'required'
++        ]);
++        $validator->validate();
++        $announce = $request->all();
++        return view('admins.announce.adminPreview', compact('announce'));
++    }
++
++    //【管理者】通知作成機能
++    public function adminStore(Announce $announce, Request $request)
++    {
++        if (isset($request['action'])) {
++            return redirect()->route('admin.announces.create')->withInput();
++        } else {
++            $announce->fill($request->all())->save();
++            return redirect()->route("admin.announces.index")->with('flash_message', '通知登録が完了しました');
++        }
++    }
++
++    //【管理者】通知編集ページ
++    public function adminEdit(Announce $announce)
++    {
++        return view('admins.announce.adminEdit', compact('announce'));
++    }
++
++    //【管理者】通知編集プレビュー
++    public function adminEditPreview(Request $request)
++    {
++        $validator = Validator::make($request->all(), [
++            'title' => 'required',
++            'contents' => 'required'
++        ]);
++        $validator->validate();
++        $announce = Announce::find($request->id);
++        $update_data = $request->all();
++        return view('admins.announce.adminEditPreview', compact('announce', 'update_data'));
++    }
++
++    //【管理者】通知編集機能
++    public function adminUpdate(Request $request)
++    {
++        if (isset($request['action'])) {
++            return redirect()->route('admin.announces.edit', ['announce' => $request->id])->withInput();
++        } else {
++            Announce::where('id', $request->id)
++                ->update([
++                    'title' => $request->title,
++                    'contents' => $request->contents
++                ]);
++            return redirect()->route("admin.announces.index")->with('flash_message', '通知編集が完了しました');
++        }
++    }
++
++    //【管理者】通知削除機能
++    public function adminDelete(Announce $announce)
++    {
++        $announce->delete();
++        return redirect()->route("admin.announces.index")->with('flash_message', '通知削除が完了しました');
++    }
+ }

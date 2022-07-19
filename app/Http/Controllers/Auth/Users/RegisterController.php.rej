@@ -1,0 +1,9 @@
+diff a/app/Http/Controllers/Auth/Users/RegisterController.php b/app/Http/Controllers/Auth/Users/RegisterController.php	(rejected hunks)
+@@ -34,6 +34,7 @@
+      *
+      * @var string
+      */
++    protected $redirectTo = '/';
+ 
+     /**
+      * Create a new controller instance.

@@ -1,0 +1,10 @@
+diff a/app/User.php b/app/User.php	(rejected hunks)
+@@ -25,7 +25,7 @@
+      * @var array
+      */
+     protected $hidden = [
+-        'password', 'remember_token',
++        'password','password_confirmation','remember_token',
+     ];
+ 
+     /**
