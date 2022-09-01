@@ -11,5 +11,9 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix.js('resources/js/app.js', 'public/js');
+mix.js('resources/js/components/Sample.js', 'public/js');
+mix.js('resources/js/components/Task.js', 'public/js');
+mix.js('resources/js/swiper.js', 'public/js');
+mix.css('resources/css/swiper.css', 'public/css');
+   // .sass('resources/sass/app.scss', 'public/css');

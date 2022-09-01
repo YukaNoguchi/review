@@ -12,6 +12,9 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use App\Events\Message;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 
 //ユーザー側ログイン・新規登録
@@ -39,7 +42,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::get('/', 'ProductController@userHome')->name('users.home');
 
     //【ユーザー】検索ページ・機能
-    Route::get('search', 'ProductController@userSearch')->name('users.search');
+    Route::get('search/{category?}', 'ProductController@userSearch')->name('users.search');
 
     //【ユーザー】商品詳細ページ
     Route::get('products/{product}', 'ProductController@userShow')->name('users.products.show');
@@ -133,6 +136,27 @@ Route::group(['middleware' => 'auth:user'], function () {
 
     //【ユーザー】他者プロフィールページ
     Route::get('users/{user}/tabs/{tab?}', 'UserController@show')->name('users.profiles.show');
+
+    // chatbotのルーティング
+Route::get('sample', function () {
+    return view('sample');
+});
+
+Route::get('/tasks', function () {
+    return view('task');
+});
+
+Route::post('/send-message', function (Request $request) {
+    event(
+        new Message(
+            $request->input('username'),
+            $request->input('message')
+        )
+    );
+    // return view('index');
+    return ["success" => true];
+
+});
 
 });
 
@@ -233,3 +257,13 @@ Route::group(['middleware' => 'auth:admin'], function () {
     //【管理者】パスワード編集機能
     Route::post('admin/password/update', 'AdminController@passwordUpdate')->name('admin.password.update');
 });
+
+// Auth::routes();
+// ↑UIインストールで追加された？
+
+Route::get('welcome', 'HomeController@index')->name('welcome');
+
+// Route::get('/{any}', function(){
+//     return view('App');
+// })->where('any', '.*');
+// // .*は、正規表現で0文字以上の任意の文字列を意味する

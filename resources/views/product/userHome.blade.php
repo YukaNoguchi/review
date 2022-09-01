@@ -2,19 +2,80 @@
 
 @section('content')
 
-<div class="container">
+<!-- <div class="swiper-container">
   @foreach ($slides as $slide)
-  <div class="slide-box">
+  <div class="swiper-wrapper">
     @if(file_exists('storage/slide/' . $slide->image_path))
-    <img src="{{ asset('storage/slide/' . $slide->image_path) }}" alt="{{ $slide->title }}">
+    <div class="swiper-slide"><img src="{{ asset('/storage/slide/' . $slide->image_path) }}" alt="{{ $slide->title }}"></div>
     @else
-    <img src="{{ asset('storage/slide/no_slide.png') }}" alt="no_slide">
+    <div class="swiper-slide"><img class="swiper-slide"src="{{ asset('images/no_image.png') }}" alt="no_slide"></div>
     @endif
   </div>
   @endforeach
-  <span class="slide-button prev"></span>
-  <span class="slide-button next"></span>
+
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div> -->
+
+<div class="swiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    <div class="swiper-slide">
+      <img src="./images/logo.png">
+    </div>
+    <div class="swiper-slide">
+      <img src="./images/home.png">
+    </div>
+    <div class="swiper-slide">
+     <img src="./images/ranking.png">
+   </div>
+  </div>
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
+
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+  <!-- If we need scrollbar -->
+  <!-- <div class="swiper-scrollbar"></div> -->
 </div>
+
+<script type="module">
+  const swiper = new Swiper('.swiper', {
+  // Optional parameters
+  // direction: 'vertical',
+  loop: true,
+
+  // If we need pagination
+  pagination: {
+  el: '.swiper-pagination',
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+
+  // And if we need scrollbar
+  // scrollbar: {
+  //   el: '.swiper-scrollbar',
+  // },
+});
+</script>
+
+<style type="text/css">
+.swiper {
+width: 1000px;
+height: 300px;
+}
+/* .swiper-slide{
+  displey: flex;
+  align-items: center;
+} */
+</style>
 
 @foreach ($products as $product)
 <div class="product-container">
